@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Component {
+public class Component implements Runnable {
 
     String type;
     int reportRate;
@@ -11,5 +11,9 @@ public class Component {
         Random random = new Random();
         reportRate = random.nextInt(9) + 1;
         missionSize = random.nextInt(9) + 1;
+    }
+
+    public void run() {
+        System.out.println("Component running");
     }
 }

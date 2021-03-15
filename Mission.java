@@ -1,17 +1,11 @@
 import java.util.ArrayList;
-import java.util.Random;
-public class Mission {
+public class Mission implements Runnable{
 
     long startTime;
     ArrayList<Component> componentList;
     String destination;
 
-    public Mission(String destination) {
-        this.destination = destination;
-        long currentTime = System.currentTimeMillis();
-        Random random = new Random();
-        startTime = random.nextInt() + currentTime;
-        // componentList = new ArrayList<Component>();
-
+    public void run() {
+        System.out.println("Mission thread running");
     }
 }
