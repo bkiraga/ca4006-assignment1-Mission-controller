@@ -6,11 +6,10 @@ public class Component implements Runnable {
     int reportRate;
     int missionSize;
 
-    public Component(String type) {
+    public Component(String type, reportRate, missionSize) {
         this.type = type;
-        Random random = new Random();
-        reportRate = random.nextInt(9) + 1;
-        missionSize = random.nextInt(9) + 1;
+        this.reportRate = reportRate;
+        this.missionSize = missionSize;
     }
 
     public void run() {
