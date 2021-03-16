@@ -1,14 +1,18 @@
 import java.util.ArrayList;
-public class Mission implements Runnable{
+public class Mission implements Runnable {
 
     int startTime;
     ArrayList<Component> componentList;
-    String destination;
+    int destination;
     String stage;
 
-    public Mission(int startTime, String destination) {
+    public Mission(int startTime, int destination) {
         this.startTime = startTime;
         this.destination = destination;
+    }
+
+    public void sendReport() {
+
     }
 
     public void run() {
