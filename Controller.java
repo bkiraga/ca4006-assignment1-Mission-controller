@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.concurrent.*;
 
 public class Controller {
@@ -8,6 +9,7 @@ public class Controller {
     public Controller(int missionCount) {
         this.missionCount = missionCount;
         threadPool = Executors.newFixedThreadPool(missionCount);
+        // HashMap<Mission, String> missionsList;
     }
 
     public void constructMissionComponents() {
@@ -15,7 +17,9 @@ public class Controller {
     }
     
     public void launchMission(int startTime, int destination) {
-        threadPool.execute(new Mission(startTime, destination));
+        Mission mission = new Mission(startTime, destination);
+
+        threadPool.execute(mission);
     }
 
     public void updateMissionStage() {
