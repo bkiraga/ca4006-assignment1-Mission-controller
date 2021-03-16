@@ -10,12 +10,13 @@ public class Mission implements Runnable {
     public Mission(int startTime, int destination) {
         this.startTime = startTime;
         this.destination = destination;
-        network = new Network("fast");
+        network = new Network();
         stage = 0;
     }
 
     public void sendReport() {
-
+        //send report through network
+        System.out.println("stage finished");
     }
 
     // stage=0 -> waiting for boost
@@ -31,18 +32,22 @@ public class Mission implements Runnable {
             unixTime = System.currentTimeMillis() / 1000L;
         }
         stage += 1;
-        // send report
+        sendReport();
         stage += 1;
-        while (unixTime < transitTime) {
-            unixTime = System.currentTimeMillis() / 1000L;
+        try {
+            Thread.sleep(5);
+        } catch(InterruptedException exception) {
+            exception.printStackTrace();
         }
-        //send report
+        sendReport();
         stage += 1;
-        //send report
+        sendReport();
         stage += 1;
-        while (unixTime < explorationTime){
-            unixTime = System.currentTimeMillis() / 1000L;
+        try {
+            Thread.sleep(5);
+        } catch(InterruptedException exception) {
+            exception.printStackTrace();
         }
-        //send report
+        sendReport();
     }
 }
