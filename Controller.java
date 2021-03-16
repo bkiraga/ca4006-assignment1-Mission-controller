@@ -3,9 +3,11 @@ import java.util.concurrent.*;
 public class Controller {
 
     ExecutorService threadPool;
+    int missionCount;
 
-    public Controller() {
-        threadPool = Executors.newFixedThreadPool(10);
+    public Controller(int missionCount) {
+        this.missionCount = missionCount;
+        threadPool = Executors.newFixedThreadPool(missionCount);
     }
 
     public void constructMissionComponents() {
