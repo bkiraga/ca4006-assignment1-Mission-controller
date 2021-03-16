@@ -12,8 +12,8 @@ public class Controller {
 
     }
     
-    public void launchMission(int startTime, String destination) {
-        threadPool.execute(new Mission(3,5));
+    public void launchMission(int startTime, int destination) {
+        threadPool.execute(new Mission(startTime, destination));
     }
 
     public void updateMissionStage() {
