@@ -1,11 +1,13 @@
+import java.util.Random;
 public class Component implements Runnable {
 
     String type;
     int reportRate;
     int missionSize;
+    Network network;
 
-    public Component() {
- 
+    public Component(Network network, String type) {
+        this.network = network;
     }
 
     public void run() {
