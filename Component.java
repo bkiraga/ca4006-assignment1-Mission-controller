@@ -4,10 +4,8 @@ public class Component implements Runnable {
     int reportRate;
     int missionSize;
 
-    public Component(String type, int reportRate, int missionSize) {
-        this.type = type;
-        this.reportRate = reportRate;
-        this.missionSize = missionSize;
+    public Component() {
+ 
     }
 
     public void run() {

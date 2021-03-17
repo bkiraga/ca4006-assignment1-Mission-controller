@@ -7,7 +7,7 @@ public class Controller {
     int missionCount;
 
     public Controller() {
-        threadPool = Executors.newFixedThreadPool(2);
+        threadPool = Executors.newFixedThreadPool(4);
     }
 
     public void constructMissionComponents() {
@@ -45,12 +45,6 @@ public class Controller {
         controller.launchMission(6,20);
         controller.launchMission(8,30);
         controller.launchMission(9,55);
-        controller.launchMission(10,60);
-        controller.launchMission(12,80);
-        controller.launchMission(14,89);
-        controller.launchMission(15,90);
-        controller.launchMission(22,100);
-        controller.launchMission(33,105);
         threadPool.shutdown();
     }
 }
