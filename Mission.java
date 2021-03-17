@@ -23,18 +23,18 @@ public class Mission implements Runnable {
         System.out.println("stage " + stage + " finished");
     }
 
-    public boolean stage(int stage, int time) {
-        Random rand = new Random();
-        missionFailed = rand.nextInt(100) < 10;
-        if (stage != 0 && stage % 2 != 0) {
-            try {
-                Thread.sleep(time);
-            } catch (InterruptedException exception) {
-                exception.printStackTrace();
-            }
-        }
-        return missionFailed;
-    }
+    // public boolean stage(int stage, int time) {
+    //     Random rand = new Random();
+    //     missionFailed = rand.nextInt(100) < 10;
+    //     if (stage != 0 && stage % 2 != 0) {
+    //         try {
+    //             Thread.sleep(time);
+    //         } catch (InterruptedException exception) {
+    //             exception.printStackTrace();
+    //         }
+    //     }
+    //     return missionFailed;
+    // }
 
     // stage=0 -> waiting for boost
     // stage=1 -> boost
@@ -43,13 +43,18 @@ public class Mission implements Runnable {
     // stage=4 -> exploration
 
     public void run() {
-        System.out.println("Mission thread running");
+        System.out.println(Thread.currentThread().getName() + " Mission thread running");
         try {
-            Thread.sleep(System.currentTimeMillis() - startTime);
+            Thread.sleep(3000);
         } catch(InterruptedException exception) {
             exception.printStackTrace();
         }
-        stage += 1;
+        // try {
+        //     Thread.sleep(System.currentTimeMillis() - startTime);
+        // } catch(InterruptedException exception) {
+        //     exception.printStackTrace();
+        // }
+        // stage += 1;
 
         // //boost stage
         // fail = rand.nextInt(100) < 25;
