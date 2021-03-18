@@ -17,14 +17,15 @@ public class Component implements Runnable {
     public void run() {
         System.out.println("Component:" + type + " running");
         Random rand = new Random();
-        reportRate = rand.nextInt(10000) + 1000;
+        reportRate = rand.nextInt(2000) + 500;  //reports vary from every half a month to every 2 months
         boolean needResponse;
-        while (mission.missionEnd < (System.currentTimeMillis() / 1000)) {
+        while ((System.currentTimeMillis() / 1000) < mission.missionEnd){
             try {
                 Thread.sleep(reportRate);
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
             }
+            System.out.println("Success" + type);
             needResponse = rand.nextInt(100) < 30;
             if (needResponse) {
                 //sleep mission

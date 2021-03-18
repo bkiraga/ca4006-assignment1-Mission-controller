@@ -28,10 +28,10 @@ public class Controller {
         long startTime = rand.nextInt(10) + (System.currentTimeMillis() / 1000);
 
         //random amount of fuel
-        int fuel = rand.nextInt(1000) + 1000;
+        int fuel = rand.nextInt(10) + 10;
 
         //destination is a funtion of the fuel carried
-        int destination = fuel / 2;
+        int destination = fuel * 2;
 
         //longer missions require more thrusters
         int thrusterCount;

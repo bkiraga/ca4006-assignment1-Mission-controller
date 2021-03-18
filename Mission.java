@@ -19,7 +19,7 @@ public class Mission implements Runnable {
         this.startTime = startTime;
         this.destination = destination;
         this.componentList = componentList;
-        missionDuration = destination * 5; //mission duration is a function of the destination
+        missionDuration = destination; //mission duration is a function of the destination
         missionEnd = startTime + missionDuration;
         network = new Network();
         stage = 0;
@@ -28,7 +28,8 @@ public class Mission implements Runnable {
 
     public void sendReport(String type, boolean failiure) {
         //send report through network
-        System.out.println(Thread.currentThread().getName() + " stage " + stage + " finished");
+        // System.out.println(Thread.currentThread().getName() + " stage " + stage + " finished");
+        // System.out.println("reportsent");
     }
 
     public boolean missionStage(int stage, int missionDuration) {
@@ -40,18 +41,6 @@ public class Mission implements Runnable {
             } else if (stage == 2) {
                 pauseMission(transitTime, false);
             }
-            // try {
-            //     int explorationTime = 5000;
-            //     int transitTime = missionDuration - explorationTime;
-            //     if (stage == 4) {
-            //         Thread.sleep(explorationTime);
-            //     } else if (stage == 2) {
-            //         Thread.sleep(transitTime);
-            //     }
-            //     Thread.sleep(missionDuration / 2);
-            // } catch (InterruptedException exception) {
-            //     exception.printStackTrace();
-            // }
         }
         Random rand = new Random();
         boolean stageFailure = rand.nextInt(100) < 10;
@@ -89,8 +78,8 @@ public class Mission implements Runnable {
 
     public void run() {
 
-        System.out.println(Thread.currentThread().getName() + " Mission thread running");
-
+        // System.out.println(Thread.currentThread().getName() + " Mission thread running");
+        
         //time before launch
         while ((System.currentTimeMillis()/1000) < startTime) {
             pauseMission(10, false);
@@ -117,7 +106,7 @@ public class Mission implements Runnable {
                 sendReport("mission", false);
                 stage += 1; //replace with a controller method
             } else {
-                System.out.println(Thread.currentThread().getName() + " Mission failed at stage: " + stage);
+                // System.out.println(Thread.currentThread().getName() + " Mission failed at stage: " + stage);
                 sendReport("mission", true);
                 break;
             }
