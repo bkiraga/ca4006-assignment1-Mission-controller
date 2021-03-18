@@ -45,7 +45,7 @@ public class Mission implements Runnable {
         return false;
     }
 
-    public void executeComponentThreads(ExecutorService componentPool, String type) {
+    public void executeComponentThreads(ExecutorService componentPool, String type, Mission mission) {
         int count = componentList.get(type);
         for (int i = 0; i < count; i++){
             componentPool.execute(new Component(network, type));
@@ -68,10 +68,10 @@ public class Mission implements Runnable {
             componentCount += i;
         }
         ExecutorService componentPool = Executors.newFixedThreadPool(componentCount);
-        executeComponentThreads(componentPool, "thruster");
-        executeComponentThreads(componentPool, "instrument");
-        executeComponentThreads(componentPool, "controlSystem");
-        executeComponentThreads(componentPool, "powerplant");
+        executeComponentThreads(componentPool, "thruster", this);
+        executeComponentThreads(componentPool, "instrument", this);
+        executeComponentThreads(componentPool, "controlSystem", this);
+        executeComponentThreads(componentPool, "powerplant", this);
         componentPool.shutdown();
 
         //time before launch
