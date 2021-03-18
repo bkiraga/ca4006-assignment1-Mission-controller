@@ -48,7 +48,7 @@ public class Mission implements Runnable {
     public void executeComponentThreads(ExecutorService componentPool, String type, Mission mission) {
         int count = componentList.get(type);
         for (int i = 0; i < count; i++){
-            componentPool.execute(new Component(network, type));
+            componentPool.execute(new Component(network, type, mission));
         }
     }
 
