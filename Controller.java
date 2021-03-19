@@ -4,13 +4,12 @@ import java.util.Random;
 
 public class Controller {
 
-    public static ExecutorService missionPool;
+    ExecutorService missionPool;
     int missionCount;
     HashMap<Integer, Mission> missionFinder;
 
     public Controller() {
-        // missionPool = Executors.newFixedThreadPool(10);
-        missionPool = Executors.newFixedThreadPool(1);
+        missionPool = Executors.newFixedThreadPool(10);
         missionFinder = new HashMap<Integer, Mission>();
     }
 
@@ -58,7 +57,9 @@ public class Controller {
 
     public void receiveMessage(DataTransmission data) {
         if (data.type == "mission") {
-            sendSoftwareUpdate(data.id);
+            if (data.missionFailure == true) {
+                sendSoftwareUpdate(data.id);
+            }
             // updateMissionStage(data.id);
         } else if (data.type == "component") {
             sendResponseToComponent(data.id, data.componentID);
@@ -75,17 +76,5 @@ public class Controller {
 
     public void sendSoftwareUpdate(int id) {
         missionFinder.get(id).deployUpdate();
-    }
-
-    public static void main(String[] args){
-        Controller controller = new Controller();
-        // for (int i = 1; i < 11; i++) {
-        //     controller.launchMission(i, controller);
-        // }
-        controller.launchMission(1, controller);
-        // controller.launchMission();
-        // controller.launchMission();
-        // controller.launchMission();
-        missionPool.shutdown();
     }
 }

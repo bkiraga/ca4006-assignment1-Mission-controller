@@ -35,6 +35,7 @@ public class Mission implements Runnable {
         //send report through network
         DataTransmission data = new DataTransmission(id, componentID, type, missionFailure, componentNeedResponse);
         network.transmitMessage(data);
+        System.out.println("Mission Component " + componentID + " with mission thread id " + id);
     }
 
     public void deployUpdate() {
@@ -42,8 +43,10 @@ public class Mission implements Runnable {
             //25% chance to recover failiure with update
             if ((rand.nextInt(100) < 25) == true) {
                 missionFailed = true;
+                System.out.println("Mission thread " + id + "update successful");
             } else {
-                System.out.println("mission failed");
+                missionFailed = false;
+                System.out.println("Mission thread " + id + "failed");
             }
         }
     }
@@ -53,11 +56,9 @@ public class Mission implements Runnable {
             long explorationTime = 1000;
             long transitTime = missionDuration - explorationTime;
             if (stage == 4) {
-                // System.out.println("exploration");
-                pauseMission(explorationTime, false);
+                pauseMission(explorationTime);
             } else if (stage == 2) {
-                // System.out.println("transit: " + transitTime);
-                pauseMission(transitTime, false);
+                pauseMission(transitTime);
             }
         }
         boolean stageFailure = rand.nextInt(100) < 10;
@@ -81,11 +82,7 @@ public class Mission implements Runnable {
         }
     }
 
-    public void pauseMission(long time, boolean errorPause) {
-        // if (errorPause) {
-        //     missionEnd += time;
-        //     extraTime += time;
-        // }
+    public void pauseMission(long time) {
         try {
             Thread.sleep(time);
         } catch(InterruptedException exception) {
@@ -107,9 +104,10 @@ public class Mission implements Runnable {
         
         //time before launch
         while ((System.currentTimeMillis()/1000) < startTime) {
-            pauseMission(10, false);
+            pauseMission(10);
         }
         stage += 1;
+        System.out.println("Mission Thread " + id + " Strated");
 
         //start component threads
         int componentCount = 0;
@@ -134,7 +132,7 @@ public class Mission implements Runnable {
                 break;
             }
         }
-        pauseMission(2000, false);
-        System.out.println("mission finished");
+        pauseMission(2000);
+        System.out.println("Mission Thread " + id + " finished");
     }
 }

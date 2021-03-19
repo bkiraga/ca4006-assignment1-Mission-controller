@@ -18,11 +18,11 @@ public class Component implements Runnable {
 
     public void receiveResponse(){
         responded = true;
-        System.out.println("Received response");
+        System.out.println("Component " + type + " " + id + " received response");
     }
 
     public void run() {
-        // System.out.println("Component:" + type + " running");
+        System.out.println("Component " + type + " " + id + " deployed");
         Random rand = new Random();
         reportRate = rand.nextInt(2000) + 500;  //reports vary from every half a month to every 2 months
         boolean needResponse;
@@ -34,23 +34,11 @@ public class Component implements Runnable {
             }
             needResponse = rand.nextInt(100) < 30;  //30% of reports need a response
             if (needResponse) {
-                //sleep mission
                 mission.sendReport(mission.id, id, "component", false, true);
-                // responded = false;
-                //mission and thread sleeps until response is given
-                // while (!responded) {
-                //     mission.pauseMission(5, true);
-                //     try {
-                //         Thread.sleep(5);
-                //     } catch(InterruptedException exception) {
-                //         exception.printStackTrace();
-                //     }
-                // }
-                // Mission.responseReceived wakes up mission after update
             } else {
                 mission.sendReport(mission.id, id, "component", false, false);
             }
         }
-        System.out.println("Component " + type + "finished");
+        System.out.println("Component " + type + " " + id + " finished");
     }
 }
