@@ -51,19 +51,17 @@ public class Controller {
         missionPool.execute(mission);
     }
 
-    public void updateMissionStage() {
-
-    }
-
-    public void checkFailures() {
-
-    }
-
     public void sendInstructions() {
+        String instructs[] = new String[] {"Mission ID: " + Thread.currentThread().getId() + " - check bearing","Mission ID: " + Thread.currentThread().getId() + " - report fuel reserve.", "Mission ID: " + Thread.currentThread().getId() + " - engage teriary thrusters."};
+
+    	int randomElement = rand.nextInt(instructs.length);
+
+    	System.out.println(instructs[randomElement]);
+
 
     }
 
-    public void sendReports() {
+    public void sendReports(Components #) {
 
     }
 
