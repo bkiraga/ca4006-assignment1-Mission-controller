@@ -22,13 +22,13 @@ public class Controller {
     }
     
     public void launchMission() {
-        Random rand = new Random();
+        Random r = new Random();
 
         //random launch time
-        long startTime = rand.nextInt(10) + (System.currentTimeMillis() / 1000);
+        long startTime = r.nextInt(10) + (System.currentTimeMillis() / 1000);
 
         //random amount of fuel
-        int fuel = rand.nextInt(10) + 10;
+        int fuel = r.nextInt(10) + 10;
 
         //destination is a funtion of the fuel carried
         int destination = fuel * 2;
@@ -36,9 +36,9 @@ public class Controller {
         //longer missions require more thrusters
         int thrusterCount;
         if (fuel < 1000){
-            thrusterCount = rand.nextInt(2) + 1;
+            thrusterCount = r.nextInt(2) + 1;
         } else {
-            thrusterCount = rand.nextInt(2) + 3;
+            thrusterCount = r.nextInt(2) + 3;
         }
 
         //variable number of instruments, control systems and powerplants in each mission
@@ -54,20 +54,39 @@ public class Controller {
     public void sendInstructions() {
         String instructs[] = new String[] {"Mission ID: " + Thread.currentThread().getId() + " - check bearing","Mission ID: " + Thread.currentThread().getId() + " - report fuel reserve.", "Mission ID: " + Thread.currentThread().getId() + " - engage teriary thrusters."};
 
-    	int randomElement = rand.nextInt(instructs.length);
+    	int randElement = r.nextInt(instructs.length);
 
-    	System.out.println(instructs[randomElement]);
+    	System.out.println(instructs[randElement]);
 
-
-    }
-
-    public void sendReports(Components #) {
 
     }
 
-    public void sendSoftwareUpdate() {
 
-    }
+	public static void sendReports(Component components){
+
+		int[] componentList = components.components;
+
+		String[] reports = new String[] {"Mission Component Fuel with (Thread ID) " + Thread.currentThread().getId() + " - fuelr reserve level: " + componentList[] + " Time: " + Mission.startTime,
+		"Mission Component Control Systems with (Thread ID) " + Thread.currentThread().getId() + " - control systems status at : " + Mission.startTime,
+		"Mission Component Thrusters with (Thread ID) " + Thread.currentThread().getId() + " - thruster systems status at : " + Mission.startTime,
+		"Mission Component Powerplant Systems with (Thread ID) " + Thread.currentThread().getId() + " - powerplant systems status at : " + Mission.startTime
+		};
+		
+		int randElement = r.nextInt(reports.length);
+    	System.out.println(reports[randomElement]);
+	}
+
+	public static void instrumentData(Component components){
+
+        //currently no list of instruments, is a basic component
+		//String[] instrumentList = components.instruments;
+
+		String[] reports = new String[] {"Mission ID: " + Thread.currentThread().getId() + " - " + instrumentList[0] + ": temperature levels stable", "Mission ID: " + Thread.currentThread().getId() + " - " + instrumentList[1] + ": no nearby floating debris"};
+		int randElement = r.nextInt(reports.length);
+    	System.out.println(reports[randElement]);
+	}
+
+
 
     public static void main(String[] args){
         Controller controller = new Controller();
