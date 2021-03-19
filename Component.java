@@ -11,22 +11,23 @@ public class Component implements Runnable {
         this.network = network;
         this.mission = mission;
         this.type = type;
-        missionSize = mission.destination;
+        // missionSize = mission.destination;
     }
 
     public void run() {
-        System.out.println("Component:" + type + " running");
+        // System.out.println("Component:" + type + " running");
         Random rand = new Random();
         reportRate = rand.nextInt(2000) + 500;  //reports vary from every half a month to every 2 months
         boolean needResponse;
+        // System.out.println("End: " + mission.missionEnd);
         while ((System.currentTimeMillis() / 1000) < mission.missionEnd){
             try {
                 Thread.sleep(reportRate);
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
             }
-            System.out.println("Success" + type);
-            needResponse = rand.nextInt(100) < 30;
+            // System.out.println("Success" + type);
+            needResponse = rand.nextInt(100) < 30;  //30% of reports need a response
             if (needResponse) {
                 //sleep mission
                 mission.sendReport(type, true);

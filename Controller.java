@@ -8,7 +8,8 @@ public class Controller {
     int missionCount;
 
     public Controller() {
-        missionPool = Executors.newFixedThreadPool(10);
+        // missionPool = Executors.newFixedThreadPool(10);
+        missionPool = Executors.newFixedThreadPool(1);
     }
 
     //we assume that space crfaft doesnt use its space communication before launch
@@ -28,10 +29,10 @@ public class Controller {
         long startTime = rand.nextInt(10) + (System.currentTimeMillis() / 1000);
 
         //random amount of fuel
-        int fuel = rand.nextInt(10) + 10;
+        long fuel = rand.nextInt(5) + 2;
 
         //destination is a funtion of the fuel carried
-        int destination = fuel * 2;
+        long destination = fuel * 2;
 
         //longer missions require more thrusters
         int thrusterCount;
@@ -74,9 +75,9 @@ public class Controller {
     public static void main(String[] args){
         Controller controller = new Controller();
         controller.launchMission();
-        controller.launchMission();
-        controller.launchMission();
-        controller.launchMission();
+        // controller.launchMission();
+        // controller.launchMission();
+        // controller.launchMission();
         missionPool.shutdown();
     }
 }

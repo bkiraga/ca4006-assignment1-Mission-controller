@@ -6,21 +6,22 @@ public class Mission implements Runnable {
 
     // int id;
     long startTime;
-    int destination;
-    int missionDuration;
+    long destination;
+    long missionDuration;
     long missionEnd;
-    HashMap<String, Integer> componentList;
+    HashMap<String, Integer> assembledComponents;
+    HashMap<Integer, Component> components;
     int stage;
     boolean missionFailed;
     Network network;
 
-    public Mission(long startTime, int destination, HashMap<String, Integer> componentList) {
+    public Mission(long startTime, long destination, HashMap<String, Integer> assembledComponents) {
         // this.id = id;
         this.startTime = startTime;
         this.destination = destination;
-        this.componentList = componentList;
-        missionDuration = destination; //mission duration is a function of the destination
-        missionEnd = startTime + missionDuration;
+        this.assembledComponents = assembledComponents;
+        missionDuration = destination * 1000; //mission duration is a function of the destination
+        missionEnd = startTime + destination;
         network = new Network();
         stage = 0;
         missionFailed = false;
@@ -32,37 +33,40 @@ public class Mission implements Runnable {
         // System.out.println("reportsent");
     }
 
-    public boolean missionStage(int stage, int missionDuration) {
-        if (stage != 0 && stage % 2 != 0) {
-            int explorationTime = 1000;
-            int transitTime = missionDuration - explorationTime;
+    public void missionStage(int stage, long missionDuration) {
+        if ((stage != 0) && (stage % 2 == 0)) {
+            long explorationTime = 1000;
+            long transitTime = missionDuration - explorationTime;
             if (stage == 4) {
+                // System.out.println("exploration");
                 pauseMission(explorationTime, false);
             } else if (stage == 2) {
+                // System.out.println("transit: " + transitTime);
                 pauseMission(transitTime, false);
             }
         }
         Random rand = new Random();
         boolean stageFailure = rand.nextInt(100) < 10;
         if (stageFailure) {
+            missionFailed = true;
             //ask controller for update
-            //if update fails set to true
-            return true;
+        } else {
+            missionFailed = false;
         }
-        return false;
+
     }
 
     public void executeComponentThreads(ExecutorService componentPool, String type, Mission mission) {
-        int count = componentList.get(type);
+        int count = assembledComponents.get(type);
         for (int i = 0; i < count; i++){
             componentPool.execute(new Component(network, type, mission));
         }
     }
 
     public void pauseMission(long time, boolean errorPause) {
-        if (errorPause) {
-            missionEnd += time;
-        }
+        // if (errorPause) {
+        //     missionEnd += time;
+        // }
         try {
             Thread.sleep(time);
         } catch(InterruptedException exception) {
@@ -79,16 +83,20 @@ public class Mission implements Runnable {
     public void run() {
 
         // System.out.println(Thread.currentThread().getName() + " Mission thread running");
+        System.out.println("starttime: " + startTime);
+        System.out.println("missionduration: " + missionDuration);
+        System.out.println("missionEnd: " + missionEnd);
         
         //time before launch
         while ((System.currentTimeMillis()/1000) < startTime) {
             pauseMission(10, false);
         }
         stage += 1;
+        // System.out.println(stage);
 
         //start component threads
         int componentCount = 0;
-        for (int i : componentList.values()) {
+        for (int i : assembledComponents.values()) {
             componentCount += i;
         }
         ExecutorService componentPool = Executors.newFixedThreadPool(componentCount);
@@ -99,18 +107,20 @@ public class Mission implements Runnable {
         componentPool.shutdown();
 
         //stages 1-4
-        boolean stageFailiure;;
         while (stage <= 4) {
-            stageFailiure = missionStage(stage, missionDuration);
-            if (!stageFailiure){
+            // stageFailiure = missionStage(stage, missionDuration);
+            missionStage(stage, missionDuration);
+            if (!missionFailed){
                 sendReport("mission", false);
                 stage += 1; //replace with a controller method
+                // System.out.println(stage);
             } else {
                 // System.out.println(Thread.currentThread().getName() + " Mission failed at stage: " + stage);
                 sendReport("mission", true);
                 break;
             }
         }
+        pauseMission(2000, false);
         System.out.println("mission finished");
     }
 }
