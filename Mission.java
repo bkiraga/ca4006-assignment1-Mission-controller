@@ -27,8 +27,7 @@ public class Mission implements Runnable {
         missionEnd = startTime + destination;
         network = new Network(controller);
         stage = 0;
-        missionFailed = false;
-        
+        missionFailed = false;  
     }
 
     public void sendReport(int id, int componentID, String type, boolean missionFailure, boolean componentNeedResponse) {
