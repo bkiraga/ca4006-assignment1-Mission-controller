@@ -12,7 +12,7 @@ public class Controller {
         missionPool = Executors.newFixedThreadPool(1);
     }
 
-    //we assume that space crfaft doesnt use its space communication before launch
+    //we assume that space craft doesnt use its space communication before launch
     public HashMap<String, Integer> constructMissionComponents(int thrusterCount, int instrumentCount, int controlSystemCount, int powerplantCount) {
         HashMap<String, Integer> components = new HashMap<String, Integer>();
         components.put("thruster", thrusterCount);
@@ -22,7 +22,7 @@ public class Controller {
         return components;
     }
     
-    public void launchMission() {
+    public void launchMission(int id) {
         Random rand = new Random();
 
         //random launch time
@@ -47,8 +47,9 @@ public class Controller {
         int controlSystemCount = rand.nextInt(2) + 1;
         int powerplantCount = rand.nextInt(2) + 1;
 
+
         HashMap<String, Integer> components = constructMissionComponents(thrusterCount, instrumentCount, controlSystemCount, powerplantCount);
-        Mission mission = new Mission(startTime, destination, components);
+        Mission mission = new Mission(id, startTime, destination, components);
         missionPool.execute(mission);
     }
 
@@ -74,7 +75,7 @@ public class Controller {
 
     public static void main(String[] args){
         Controller controller = new Controller();
-        controller.launchMission();
+        controller.launchMission(1);
         // controller.launchMission();
         // controller.launchMission();
         // controller.launchMission();

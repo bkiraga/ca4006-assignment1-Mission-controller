@@ -3,15 +3,15 @@ public class Component implements Runnable {
 
     String type;
     int reportRate;
-    int missionSize;
+    int id;
     Network network;
     Mission mission;
 
-    public Component(Network network, String type, Mission mission) {
+    public Component(int id, Network network, String type, Mission mission) {
         this.network = network;
         this.mission = mission;
         this.type = type;
-        // missionSize = mission.destination;
+        this.id = id;
     }
 
     public void run() {
@@ -19,21 +19,20 @@ public class Component implements Runnable {
         Random rand = new Random();
         reportRate = rand.nextInt(2000) + 500;  //reports vary from every half a month to every 2 months
         boolean needResponse;
-        // System.out.println("End: " + mission.missionEnd);
         while ((System.currentTimeMillis() / 1000) < mission.missionEnd){
             try {
                 Thread.sleep(reportRate);
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
             }
-            // System.out.println("Success" + type);
             needResponse = rand.nextInt(100) < 30;  //30% of reports need a response
             if (needResponse) {
                 //sleep mission
-                mission.sendReport(type, true);
+                // mission.pauseMission(5, true);
+                mission.sendReport(id, type, true);
                 // wake up mission after update
             } else {
-                mission.sendReport(type, false);
+                mission.sendReport(id, type, false);
             }
         }
         System.out.println("Component " + type + "finished");

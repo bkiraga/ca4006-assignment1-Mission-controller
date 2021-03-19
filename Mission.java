@@ -4,19 +4,19 @@ import java.util.concurrent.*;
 
 public class Mission implements Runnable {
 
-    // int id;
+    int id;
     long startTime;
     long destination;
     long missionDuration;
     long missionEnd;
     HashMap<String, Integer> assembledComponents;
-    HashMap<Integer, Component> components;
+    HashMap<Integer, Component> componentFinder = new HashMap<Integer, Component>();
     int stage;
     boolean missionFailed;
     Network network;
 
-    public Mission(long startTime, long destination, HashMap<String, Integer> assembledComponents) {
-        // this.id = id;
+    public Mission(int id, long startTime, long destination, HashMap<String, Integer> assembledComponents) {
+        this.id = id;
         this.startTime = startTime;
         this.destination = destination;
         this.assembledComponents = assembledComponents;
@@ -27,7 +27,7 @@ public class Mission implements Runnable {
         missionFailed = false;
     }
 
-    public void sendReport(String type, boolean failiure) {
+    public void sendReport(int id, String type, boolean failiure) {
         //send report through network
         // System.out.println(Thread.currentThread().getName() + " stage " + stage + " finished");
         // System.out.println("reportsent");
@@ -58,8 +58,12 @@ public class Mission implements Runnable {
 
     public void executeComponentThreads(ExecutorService componentPool, String type, Mission mission) {
         int count = assembledComponents.get(type);
+        int componentID = 0;
         for (int i = 0; i < count; i++){
-            componentPool.execute(new Component(network, type, mission));
+            Component component = new Component(componentID, network, type, mission);
+            componentFinder.put(componentID, component);
+            componentPool.execute(component);
+            componentID += 1;
         }
     }
 
@@ -83,16 +87,15 @@ public class Mission implements Runnable {
     public void run() {
 
         // System.out.println(Thread.currentThread().getName() + " Mission thread running");
-        System.out.println("starttime: " + startTime);
-        System.out.println("missionduration: " + missionDuration);
-        System.out.println("missionEnd: " + missionEnd);
+        // System.out.println("starttime: " + startTime);
+        // System.out.println("missionduration: " + missionDuration);
+        // System.out.println("missionEnd: " + missionEnd);
         
         //time before launch
         while ((System.currentTimeMillis()/1000) < startTime) {
             pauseMission(10, false);
         }
         stage += 1;
-        // System.out.println(stage);
 
         //start component threads
         int componentCount = 0;
@@ -108,15 +111,14 @@ public class Mission implements Runnable {
 
         //stages 1-4
         while (stage <= 4) {
-            // stageFailiure = missionStage(stage, missionDuration);
             missionStage(stage, missionDuration);
             if (!missionFailed){
-                sendReport("mission", false);
+                sendReport(id, "mission", false);
                 stage += 1; //replace with a controller method
                 // System.out.println(stage);
             } else {
                 // System.out.println(Thread.currentThread().getName() + " Mission failed at stage: " + stage);
-                sendReport("mission", true);
+                sendReport(id, "mission", true);
                 break;
             }
         }
