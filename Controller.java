@@ -6,10 +6,12 @@ public class Controller {
 
     public static ExecutorService missionPool;
     int missionCount;
+    HashMap<Integer, Mission> missionFinder;
 
     public Controller() {
         // missionPool = Executors.newFixedThreadPool(10);
         missionPool = Executors.newFixedThreadPool(1);
+        missionFinder = new HashMap<Integer, Mission>();
     }
 
     //we assume that space craft doesnt use its space communication before launch
@@ -22,7 +24,7 @@ public class Controller {
         return components;
     }
     
-    public void launchMission(int id) {
+    public void launchMission(int id, Controller controller) {
         Random rand = new Random();
 
         //random launch time
@@ -49,33 +51,38 @@ public class Controller {
 
 
         HashMap<String, Integer> components = constructMissionComponents(thrusterCount, instrumentCount, controlSystemCount, powerplantCount);
-        Mission mission = new Mission(id, startTime, destination, components);
+        Mission mission = new Mission(id, startTime, destination, components, controller);
+        missionFinder.put(id, mission);
         missionPool.execute(mission);
     }
 
-    public void updateMissionStage() {
-
+    public void receiveMessage(DataTransmission data) {
+        if (data.type == "mission") {
+            sendSoftwareUpdate(data.id);
+            // updateMissionStage(data.id);
+        } else if (data.type == "component") {
+            sendResponseToComponent(data.id, data.componentID);
+        }
     }
 
-    public void checkFailures() {
-
+    public void updateMissionStage(int id) {
+        missionFinder.get(id).stage += 1;
     }
 
-    public void sendInstructions() {
-
+    public void sendResponseToComponent(int missionID, int componentID) {
+        missionFinder.get(missionID).componentFinder.get(componentID).receiveResponse();
     }
 
-    public void sendReports() {
-
-    }
-
-    public void sendSoftwareUpdate() {
-
+    public void sendSoftwareUpdate(int id) {
+        missionFinder.get(id).deployUpdate();
     }
 
     public static void main(String[] args){
         Controller controller = new Controller();
-        controller.launchMission(1);
+        // for (int i = 1; i < 11; i++) {
+        //     controller.launchMission(i, controller);
+        // }
+        controller.launchMission(1, controller);
         // controller.launchMission();
         // controller.launchMission();
         // controller.launchMission();

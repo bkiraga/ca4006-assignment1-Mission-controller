@@ -6,12 +6,19 @@ public class Component implements Runnable {
     int id;
     Network network;
     Mission mission;
+    boolean responded;
 
     public Component(int id, Network network, String type, Mission mission) {
         this.network = network;
         this.mission = mission;
         this.type = type;
         this.id = id;
+        responded = true;
+    }
+
+    public void receiveResponse(){
+        responded = true;
+        System.out.println("Received response");
     }
 
     public void run() {
@@ -28,11 +35,20 @@ public class Component implements Runnable {
             needResponse = rand.nextInt(100) < 30;  //30% of reports need a response
             if (needResponse) {
                 //sleep mission
-                // mission.pauseMission(5, true);
-                mission.sendReport(id, type, true);
-                // wake up mission after update
+                mission.sendReport(mission.id, id, "component", false, true);
+                // responded = false;
+                //mission and thread sleeps until response is given
+                // while (!responded) {
+                //     mission.pauseMission(5, true);
+                //     try {
+                //         Thread.sleep(5);
+                //     } catch(InterruptedException exception) {
+                //         exception.printStackTrace();
+                //     }
+                // }
+                // Mission.responseReceived wakes up mission after update
             } else {
-                mission.sendReport(id, type, false);
+                mission.sendReport(mission.id, id, "component", false, false);
             }
         }
         System.out.println("Component " + type + "finished");
