@@ -8,7 +8,7 @@ public class Network {
 	int rNum = r.nextInt(3);
 	
 	// Array of upload rate and network availability 
-	List<Integer> rateList = Arrays.asList(20000000,20000,20);
+	List<Integer> rateList = Arrays.asList(167772160,163840,20);
 	List<Double> availabilityList = Arrays.asList(0.8,0.9,0.999);
 	}
 	
