@@ -1,54 +1,48 @@
 import java.lang.Thread;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 import java.util.Random;
 
 
-public class Network implements Runnable {
+public class Network {
 	Random r = new Random();
 	int rNum = r.nextInt(3);
-	enum TypeNET{
-		FNET (20000000, 0.8),
-		MNET (20000, 0.9),
-		SNET (20, 0.999);
-		
-		public int speed;
-		public double avail;
-		
-		private TypeNET(int speed, double avail) {
-			this.speed = speed;
-			this.avail = avail;
-		}
+	
+	// Array of upload rate and network availability 
+	List<Integer> rateList = Arrays.asList(20000000,20000,20);
+	List<Double> availabilityList = Arrays.asList(0.8,0.9,0.999);
 	}
 	
-	Queue<Pair<Message, Boolean>> messages = new LinkedList<>();
-	
-	void messageController(Message message){
-        Pair<Message, Boolean> p = new Pair<Message, Boolean>(message, true);
-        //System.out.println("NETWORK (<-): " + message.info + " waiting to be sent" + " (REQUIRES RESPONSE: " + message.type == Message.TYPE_RESPONSE_NEEDED + ")");
-        messages.add(p);
-    }
-
-    void messageMission(Message message){
-        Pair<Message, Boolean> p = new Pair<Message, Boolean>(message, false);
-        //System.out.println("NETWORK (->): " + message.info + " waiting to be sent");
-        messages.add(p);
-    }
-
-    public Speed getAvailableSpeed(){
+    public int getRate(){
         Integer randInt = rand.nextInt(100);
         if (randInt <= 80){
-            return Network.TypeNET.FNET;
+            return rateList[0];
         }
         else if (randInt <= 90){
-            return Network.TypeNET.MNET;
+            return rateList[1];
         }
         else if (randInt < 100) {
-            return Network.TypeNET.SNET;
+            return rateList[2];
         }
         else{
             return null;
         }
     }
+    
+    public double getAvailable(){
+        if (randInt <= 80){
+            return availabilityList[0];
+        }
+        else if (randInt <= 90){
+            return availabilityList[1];
+        }
+        else if (randInt < 100) {
+            return availabilityList[2];
+        }
+        else{
+            return null;
+        }
+        
+    }
+    
 
 }
