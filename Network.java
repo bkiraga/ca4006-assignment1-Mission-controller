@@ -10,38 +10,36 @@ public class Network {
 	// Array of upload rate and network availability 
 	List<Integer> rateList = Arrays.asList(167772160,163840,20);
 	List<Double> availabilityList = Arrays.asList(0.8,0.9,0.999);
-	}
 	
     public int getRate(){
-        Integer randInt = rand.nextInt(100);
-        if (randInt <= 80){
-            return rateList[0];
+        Integer rNum = r.nextInt(100);
+        if (rNum <= 80){
+            return rateList.get(0);
         }
-        else if (randInt <= 90){
-            return rateList[1];
+        else if (rNum <= 90){
+            return rateList.get(1);
         }
-        else if (randInt < 100) {
-            return rateList[2];
+        else if (rNum < 100) {
+            return rateList.get(2);
         }
         else{
-            return null;
+            return 0;
         }
     }
     
     public double getAvailable(){
-        if (randInt <= 80){
-            return availabilityList[0];
+        if (rNum <= 80){
+            return availabilityList.get(0);
         }
-        else if (randInt <= 90){
-            return availabilityList[1];
+        else if (rNum <= 90){
+            return availabilityList.get(1);
         }
-        else if (randInt < 100) {
-            return availabilityList[2];
+        else if (rNum < 100) {
+            return availabilityList.get(2);
         }
-        else{
-            return null;
+        else {
+            return 0.0;
         }
-        
     }
     
 
